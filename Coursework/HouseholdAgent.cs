@@ -50,11 +50,11 @@ namespace Coursework
                         HandleStart(parameters);
                         break;
 
-                    case "Buyer":
+                    case "Buyers Unvailable":
                         HandleNoBuyers();
                         break;
 
-                    case "Seller":
+                    case "Seller Unvailable":
                         HandleNoSellers();
                         break;
 
@@ -99,7 +99,7 @@ namespace Coursework
 
                 //  Console.WriteLine($"{Name}: Buy {energyDiff}");
                 type = HouseType.Buy;
-                Send("community", $"register buy {energyDiff}");
+                Send("community", $"register buy {energyDiff} {renewableBuy}");
             }
             else
             {

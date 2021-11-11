@@ -16,8 +16,8 @@ class EnvironmentAgent : Agent
 
     private const int MinGeneration = 5; //min possible generation from renewable energy on a day for a household (in kWh)
     private const int MaxGeneration = 15; //max possible generation from renewable energy on a day for a household (in kWh)
-    private const int MinDemand = 5; //min possible demand on a day for a household (in kWh)
-    private const int MaxDemand = 15; //max possible demand on a day for a household (in kWh)
+    private const int MinDemand = 20; //min possible demand on a day for a household (in kWh)
+    private const int MaxDemand = 25; //max possible demand on a day for a household (in kWh)
     private const int MinPriceToBuyFromUtility = 12; //min possible price to buy 1kWh from the utility company (in pence)
     private const int MaxPriceToBuyFromUtility = 22; //max possible price to buy 1kWh from the utility company (in pence)
     private const int MinPriceToSellToUtility = 2; //min possible price to sell 1kWh to the utility company (in pence)

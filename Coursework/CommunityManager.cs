@@ -9,26 +9,30 @@ namespace Coursework
 {
     class CommunityManager : Agent
     {
-        private Dictionary<string, List<string>> energyBuyers;
-        private Dictionary<string, List<string>> energySellers;
         private int turnsToWait;
 
         private struct Bid
         {
             public string Bidder { get; set; }
             public int BidValue { get; set; }
+            public int EnergyDifference { get; set; }
 
-            public Bid(string bidder, int bidValue)
+            public Bid(string bidder, int bidValue, int difference)
             {
                 Bidder = bidder;
                 BidValue = bidValue;
+                EnergyDifference = difference;
             }
         }
 
+        private List<Bid> sellerBids;
+        private List<Bid> buyerBids;
+
         public CommunityManager()
         {
-            energyBuyers = new Dictionary<string, List<string>>();
-            energySellers = new Dictionary<string, List<string>>();
+            sellerBids = new List<Bid>();
+            buyerBids = new List<Bid>();
+
             turnsToWait = 2;
         }
 
@@ -69,45 +73,39 @@ namespace Coursework
 
         private void HandleRegister(string provider, List<string> details)
         {
-            List<string> attributes = new List<string>(details);
+            var bid = new Bid(provider, Convert.ToInt32(details[2]), Convert.ToInt32(details[1]));
 
-            attributes.RemoveAt(0);
-
-            if(details.Contains("buy"))
+            if (details.Contains("buy"))
             {
-                energyBuyers.Add(provider, attributes);
+                buyerBids.Add(bid);
             }
             else if(details.Contains("sell"))
             {
-                energySellers.Add(provider, attributes);
+                sellerBids.Add(bid);
             }
         }
 
         private void ManageEnergy()
         {
-            if(energySellers.Count > 0 && energyBuyers.Count > 0)
+            if(buyerBids.Count > 0 && sellerBids.Count > 0)
             {
             
             }
-            else if (energyBuyers.Count == 0 && energySellers.Count > 0)
+            else if (buyerBids.Count == 0 && sellerBids.Count > 0)
             {
-                foreach(var sellerItem in energySellers)
+                foreach(var sellerItem in sellerBids)
                 {
-                    //Console.WriteLine(sellerItem.Key);
-                    string name = sellerItem.Key.ToString();
-                    Send(name, "Buyer");
+                    Send(sellerItem.Bidder, "Buyer Unvailable");
                 }
-                energySellers.Clear();
+                sellerBids.Clear();
             }
-            else if (energySellers.Count == 0 && energyBuyers.Count > 0)
+            else if (sellerBids.Count == 0 && buyerBids.Count > 0)
             {
-                foreach (var buyerItem in energyBuyers)
+                foreach (var buyerItem in buyerBids)
                 {
-                    //Console.WriteLine(buyerItem.Key);
-                    string name = buyerItem.Key.ToString();
-                    Send(name, "Seller");
+                    Send(buyerItem.Bidder, "Seller Unvailable");
                 }
-                energyBuyers.Clear();
+                buyerBids.Clear();
             }
         }
     }

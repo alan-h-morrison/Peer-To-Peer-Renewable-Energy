@@ -94,18 +94,20 @@ namespace Coursework
                 foreach(var sellerItem in energySellers)
                 {
                     //Console.WriteLine(sellerItem.Key);
-                    Send(sellerItem.Key, "No More Buyers");
+                    string name = sellerItem.Key.ToString();
+                    Send(name, "Buyer");
                 }
-                Stop();
+                energySellers.Clear();
             }
             else if (energySellers.Count == 0 && energyBuyers.Count > 0)
             {
                 foreach (var buyerItem in energyBuyers)
                 {
                     //Console.WriteLine(buyerItem.Key);
-                    Send(buyerItem.Key, "No More Sellers");
+                    string name = buyerItem.Key.ToString();
+                    Send(name, "Seller");
                 }
-                Stop();
+                energyBuyers.Clear();
             }
         }
     }

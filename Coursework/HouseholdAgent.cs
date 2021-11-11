@@ -42,12 +42,20 @@ namespace Coursework
             {
                 Console.WriteLine($"\t{message.Format()}");
 
-                message.Parse (out string action, out string parameters);
+                message.Parse(out string action, out string parameters);
 
                 switch (action)
                 {
                     case "inform":
                         HandleStart(parameters);
+                        break;
+
+                    case "Buyer":
+                        HandleNoBuyers();
+                        break;
+
+                    case "Seller":
+                        HandleNoSellers();
                         break;
 
                     default:
@@ -62,7 +70,7 @@ namespace Coursework
 
         private void HandleStart(string details)
         {
-        
+
             string[] values = details.Split(' ');
 
             demand = Int32.Parse(values[0]);
@@ -72,19 +80,19 @@ namespace Coursework
             energyDiff = generation - demand;
 
             // Price to buy renewable is lower than the price to buy utility
-            renewableBuy = rand.Next((utilityBuy - 3) ,utilityBuy);
+            renewableBuy = rand.Next((utilityBuy - 3), utilityBuy);
 
             // Price to sell renewable is higher than the price to sell to utility
             renewableSell = rand.Next(utilitySell, (utilitySell + 10));
-            
+
             // Decides whether a household is a buyer, seller or does not need extra energy
-            if(energyDiff > 0)
+            if (energyDiff > 0)
             {
                 // Console.WriteLine($"{Name}: Sell {energyDiff}");
                 type = HouseType.Sell;
                 Send("community", $"register sell {energyDiff} {renewableSell}");
             }
-            else if(energyDiff < 0)
+            else if (energyDiff < 0)
             {
                 // Make negative number positive
                 energyDiff = energyDiff * -1;
@@ -98,7 +106,27 @@ namespace Coursework
                 Console.WriteLine($"{Name}: Met Energy Demand");
                 Stop();
             }
-           //Console.WriteLine($"{Name}: \n\tdemand = {demand}\n\tgeneration = {generation}\n\tBuy Utility = {utilityBuy}\n\tBuy Renewable = {renewableBuy}\n\tSell Utility = {utilitySell}\n\tSell Renewable = {renewableSell}");
+            //Console.WriteLine($"{Name}: \n\tdemand = {demand}\n\tgeneration = {generation}\n\tBuy Utility = {utilityBuy}\n\tBuy Renewable = {renewableBuy}\n\tSell Utility = {utilitySell}\n\tSell Renewable = {renewableSell}");
+        }
+
+        private void HandleNoBuyers()
+        {
+            Console.WriteLine($"{Name}: Buy {energyDiff}");
+
+            for (int i = 1; i < energyDiff; i++)
+            {
+                //Console.WriteLine($"{Name}: Buy Utility");
+            }
+        }
+
+        private void HandleNoSellers()
+        {
+            Console.WriteLine($"{Name}: Sell {energyDiff}");
+
+            for (int i = 1; i < energyDiff; i++)
+            {
+                //Console.WriteLine($"{Name}: Sell Utility");
+            }
         }
     }
 }

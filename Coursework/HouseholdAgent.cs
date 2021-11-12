@@ -20,6 +20,8 @@ namespace Coursework
         private int renewableBuy;
         private int renewableSell;
         private int energyDiff;
+        private int profitGain;
+        private int profitLoss;
 
         private HouseType type;
         private HousePosition position;
@@ -27,7 +29,9 @@ namespace Coursework
         public HouseholdAgent(HousePosition housePosition)
         {
             position = housePosition;
-        }
+            profitGain = 0;
+            profitLoss = 0;
+    }
 
         public override void Setup()
         {
@@ -50,11 +54,11 @@ namespace Coursework
                         HandleStart(parameters);
                         break;
 
-                    case "Buyers Unvailable":
+                    case "no-buyers":
                         HandleNoBuyers();
                         break;
 
-                    case "Seller Unvailable":
+                    case "no-sellers":
                         HandleNoSellers();
                         break;
 
@@ -115,8 +119,10 @@ namespace Coursework
 
             for (int i = 1; i < energyDiff; i++)
             {
-                //Console.WriteLine($"{Name}: Buy Utility");
+                profitGain = profitGain + utilitySell;
             }
+            Console.WriteLine($"{Name}: profit gain = {profitGain}");
+            Stop();
         }
 
         private void HandleNoSellers()
@@ -125,8 +131,10 @@ namespace Coursework
 
             for (int i = 1; i < energyDiff; i++)
             {
-                //Console.WriteLine($"{Name}: Sell Utility");
+                profitLoss = profitLoss + utilityBuy;
             }
+            Console.WriteLine($"{Name}: profit loss = {profitLoss}");
+            Stop();
         }
     }
 }

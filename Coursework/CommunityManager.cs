@@ -89,23 +89,31 @@ namespace Coursework
         {
             if(buyerBids.Count > 0 && sellerBids.Count > 0)
             {
-            
+                // sort seller bidding list by asceding value
+                sellerBids.Sort((s1, s2) => s1.BidValue.CompareTo(s2.BidValue));
+
+                // sort buyer bidding list by asceding value and the reversing the list to sort by descending value
+                buyerBids.Sort((s1, s2) => s1.BidValue.CompareTo(s2.BidValue));
+                buyerBids.Reverse();
+
             }
             else if (buyerBids.Count == 0 && sellerBids.Count > 0)
             {
                 foreach(var sellerItem in sellerBids)
                 {
-                    Send(sellerItem.Bidder, "Buyer Unvailable");
+                    Send(sellerItem.Bidder, "no-buyers");
                 }
                 sellerBids.Clear();
+                Stop();
             }
             else if (sellerBids.Count == 0 && buyerBids.Count > 0)
             {
                 foreach (var buyerItem in buyerBids)
                 {
-                    Send(buyerItem.Bidder, "Seller Unvailable");
+                    Send(buyerItem.Bidder, "no-sellers");
                 }
                 buyerBids.Clear();
+                Stop();
             }
         }
     }

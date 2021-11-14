@@ -23,6 +23,11 @@ namespace Coursework
                 BidValue = bidValue;
                 EnergyDifference = difference;
             }
+
+            public void DecreaseEnergy()
+            {
+                EnergyDifference--;
+            }
         }
 
         private List<Bid> sellerBids;
@@ -95,7 +100,6 @@ namespace Coursework
                 // sort buyer bidding list by asceding value and the reversing the list to sort by descending value
                 buyerBids.Sort((s1, s2) => s1.BidValue.CompareTo(s2.BidValue));
                 buyerBids.Reverse();
-
             }
             else if (buyerBids.Count == 0 && sellerBids.Count > 0)
             {

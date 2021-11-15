@@ -54,6 +54,14 @@ namespace Coursework
                         HandleStart(parameters);
                         break;
 
+                    case "sold":
+                        HandleSold(parameters);
+                        break;
+
+                    case "bought":
+                        HandleBought(parameters);
+                        break;
+
                     case "no-buyers":
                         HandleNoBuyers();
                         break;
@@ -94,7 +102,7 @@ namespace Coursework
             {
                 // Console.WriteLine($"{Name}: Sell {energyDiff}");
                 type = HouseType.Sell;
-                Send("community", $"register sell {energyDiff} {renewableSell}");
+                Send("community", $"register sell {renewableSell} {energyDiff}");
             }
             else if (energyDiff < 0)
             {
@@ -103,7 +111,7 @@ namespace Coursework
 
                 //  Console.WriteLine($"{Name}: Buy {energyDiff}");
                 type = HouseType.Buy;
-                Send("community", $"register buy {energyDiff} {renewableBuy}");
+                Send("community", $"register buy {renewableBuy} {energyDiff}");
             }
             else
             {
@@ -111,6 +119,15 @@ namespace Coursework
                 Stop();
             }
             //Console.WriteLine($"{Name}: \n\tdemand = {demand}\n\tgeneration = {generation}\n\tBuy Utility = {utilityBuy}\n\tBuy Renewable = {renewableBuy}\n\tSell Utility = {utilitySell}\n\tSell Renewable = {renewableSell}");
+        }
+        private void HandleSold()
+        {
+
+        }
+
+        private void HandleBought()
+        {
+
         }
 
         private void HandleNoBuyers()

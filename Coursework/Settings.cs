@@ -8,7 +8,7 @@ namespace Coursework
 {
     public class Settings
     {
-        public static int NumHouseholds = 5;
+        public static int NumHouseholds = 10;
         public int totalProfit = 0;
     }
 }

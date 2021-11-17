@@ -92,74 +92,88 @@ namespace Coursework
 
         private void ManageEnergy()
         {
-            if ((buyerBids.Count > 0 && sellerBids.Count > 0))
+            try
             {
-                var transaction = false;
+                sellerBids.Sort((s1, s2) => s1.BidValue.CompareTo(s2.BidValue));
+                sellerBids.Reverse();
 
-                for (int i = buyerBids.Count - 1; i >= 0; i--)
+                // sort buyer bidding list by asceding value and the reversing the list to sort by descending value
+                buyerBids.Sort((s1, s2) => s1.BidValue.CompareTo(s2.BidValue));
+
+                if ((buyerBids.Count > 0 && sellerBids.Count > 0))
                 {
-                    for (int j = sellerBids.Count - 1; j >= 0; j--)
+                    var transaction = false;
+
+                    for (int i = buyerBids.Count - 1; i >= 0; i--)
                     {
-                        if (buyerBids[i].EnergyDifference == 0)
+                        for (int j = sellerBids.Count - 1; j >= 0; j--)
                         {
-                            buyerBids.RemoveAt(i);
-                            break;
+                            if (buyerBids[i].EnergyDifference == 0)
+                            {
+                                buyerBids.RemoveAt(i);
+                                break;
+                            }
+
+                            if (sellerBids[j].EnergyDifference == 0)
+                            {
+                                sellerBids.RemoveAt(j);
+                                break;
+                            }
+
+                            if (buyerBids[i].BidValue > sellerBids[j].BidValue)
+                            {
+                                buyerBids[i].DecreaseEnergy();
+                                sellerBids[j].DecreaseEnergy();
+
+                                Send(buyerBids[i].Bidder, $"bought {buyerBids[i].BidValue}");
+                                Send(sellerBids[j].Bidder, $"sold {buyerBids[i].BidValue}");
+
+                                transaction = true;
+                            }
+                        }
+                    }
+
+                    if (!transaction)
+                    {
+                        Console.WriteLine("No more transactions can take place");
+
+                        foreach (var buyerItem in buyerBids)
+                        {
+                            Send(buyerItem.Bidder, "no-sellers");
                         }
 
-                        if (sellerBids[j].EnergyDifference == 0)
+                        foreach (var sellerItem in sellerBids)
                         {
-                            sellerBids.RemoveAt(j);
-                            break;
+                            Send(sellerItem.Bidder, "no-buyers");
                         }
 
-                        if (buyerBids[i].BidValue > sellerBids[j].BidValue)
-                        {
-                            buyerBids[i].DecreaseEnergy();
-                            sellerBids[j].DecreaseEnergy();
-
-                            Send(buyerBids[i].Bidder, $"bought {sellerBids[j].BidValue}");
-                            Send(sellerBids[j].Bidder, $"sold {sellerBids[j].BidValue}");
-
-                            transaction = true;
-                        }
+                        Stop();
                     }
                 }
-
-                if (!transaction)
+                else if (buyerBids.Count == 0 && sellerBids.Count > 0)
                 {
-                    Console.WriteLine("No more transactions can take place");
-
-                    foreach(var buyerItem in buyerBids)
-                    {
-                        Send(buyerItem.Bidder, "no-sellers");
-                    }
-
-                    foreach(var sellerItem in sellerBids)
+                    foreach (var sellerItem in sellerBids)
                     {
                         Send(sellerItem.Bidder, "no-buyers");
                     }
-
+                    sellerBids.Clear();
+                    Stop();
+                }
+                else if (sellerBids.Count == 0 && buyerBids.Count > 0)
+                {
+                    foreach (var buyerItem in buyerBids)
+                    {
+                        Send(buyerItem.Bidder, "no-sellers");
+                    }
+                    buyerBids.Clear();
                     Stop();
                 }
             }
-            else if (buyerBids.Count == 0 && sellerBids.Count > 0)
+            catch (Exception ex)
             {
-                foreach (var sellerItem in sellerBids)
-                {
-                    Send(sellerItem.Bidder, "no-buyers");
-                }
-                sellerBids.Clear();
-                Stop();
+                Console.WriteLine(ex);
             }
-            else if (sellerBids.Count == 0 && buyerBids.Count > 0)
-            {
-                foreach (var buyerItem in buyerBids)
-                {
-                    Send(buyerItem.Bidder, "no-sellers");
-                }
-                buyerBids.Clear();
-                Stop();
-            }
+            
 
         }
     }

@@ -27,7 +27,6 @@ namespace Coursework
 
             env.Start();
 
-            Console.WriteLine("hello");
             Console.ReadLine();
         }
     }

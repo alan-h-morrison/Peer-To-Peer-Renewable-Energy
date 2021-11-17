@@ -7,7 +7,6 @@ using ActressMas;
 
 namespace Coursework
 {
-    public enum HouseType { Buy, Sell };
     public enum HousePosition { Positive, Neutral, Negative }
 
     class HouseholdAgent : Agent
@@ -20,18 +19,18 @@ namespace Coursework
         private int renewableBuy;
         private int renewableSell;
         private int energyDiff;
-        private int profitGain;
-        private int profitLoss;
+        private int profit;
 
-        private HouseType type;
+        private bool start;
+
         private HousePosition position;
+        private string type;
 
         public HouseholdAgent(HousePosition housePosition)
         {
             position = housePosition;
-            profitGain = 0;
-            profitLoss = 0;
-    }
+            profit = 0;
+        }
 
         public override void Setup()
         {
@@ -80,6 +79,16 @@ namespace Coursework
             }
         }
 
+        public override void ActDefault()
+        {
+           if(energyDiff == 0 && start == true)
+           {
+                Send("communtiy", $"end {profit}");
+                Console.WriteLine($"[{Name}] ({type}) profit = {profit}");
+                Stop();
+           }
+        }
+
         private void HandleStart(string details)
         {
 
@@ -101,8 +110,9 @@ namespace Coursework
             if (energyDiff > 0)
             {
                 // Console.WriteLine($"{Name}: Sell {energyDiff}");
-                type = HouseType.Sell;
+                type = "seller";
                 Send("community", $"register sell {renewableSell} {energyDiff}");
+                start = true;
             }
             else if (energyDiff < 0)
             {
@@ -110,47 +120,50 @@ namespace Coursework
                 energyDiff = energyDiff * -1;
 
                 //  Console.WriteLine($"{Name}: Buy {energyDiff}");
-                type = HouseType.Buy;
+                type = "buyer";
                 Send("community", $"register buy {renewableBuy} {energyDiff}");
+                start = true;
             }
             else
             {
-                Console.WriteLine($"{Name}: Met Energy Demand");
+                Console.WriteLine($"{Name} : Met Energy Demand");
                 Stop();
             }
             //Console.WriteLine($"{Name}: \n\tdemand = {demand}\n\tgeneration = {generation}\n\tBuy Utility = {utilityBuy}\n\tBuy Renewable = {renewableBuy}\n\tSell Utility = {utilitySell}\n\tSell Renewable = {renewableSell}");
         }
-        private void HandleSold()
+        private void HandleSold(string amount)
         {
-
+            energyDiff = energyDiff - 1;
+            profit = profit + Convert.ToInt32(amount);
         }
 
-        private void HandleBought()
+        private void HandleBought(string amount)
         {
-
+            energyDiff = energyDiff - 1;
+            profit = profit - Convert.ToInt32(amount);
         }
 
         private void HandleNoBuyers()
         {
-            Console.WriteLine($"{Name}: Buy {energyDiff}");
+            Console.WriteLine($"{Name}: Sell {energyDiff}");
 
-            for (int i = 1; i < energyDiff; i++)
+            for (int i = energyDiff; i >= 0; i--)
             {
-                profitGain = profitGain + utilitySell;
+                profit = profit + utilitySell;
             }
-            Console.WriteLine($"{Name}: profit gain = {profitGain}");
+            Console.WriteLine($"{Name} ({type}): profit = {profit}");
             Stop();
         }
 
         private void HandleNoSellers()
         {
-            Console.WriteLine($"{Name}: Sell {energyDiff}");
+            Console.WriteLine($"{Name}: Buy {energyDiff}");
 
-            for (int i = 1; i < energyDiff; i++)
+            for (int i = energyDiff; i >= 0; i--)
             {
-                profitLoss = profitLoss + utilityBuy;
+                profit = profit -  utilityBuy;
             }
-            Console.WriteLine($"{Name}: profit loss = {profitLoss}");
+            Console.WriteLine($"{Name} ({type}): profit = {profit}");
             Stop();
         }
     }

@@ -40,6 +40,9 @@ class EnvironmentAgent : Agent
                 Send(senderID, content); //send the message with this information back to the household agent that requested it
                 break;
 
+            case "finish":
+                
+
             default:
                 break;
         }

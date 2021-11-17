@@ -12,11 +12,27 @@ namespace Coursework
         static void Main(string[] args)
         {
             var env = new EnvironmentMas();
+            int counter = 1;
 
-            for (int i = 1; i <= Settings.NumHouseholds; i++)
+            for (int i = 1; i <= Settings.positiveHouseholds; i++)
+            {
+                var householdAgent = new HouseholdAgent(HousePosition.Positive);
+                env.Add(householdAgent, $"household{counter:D2}");
+                counter++;
+            }
+
+            for (int i = 1; i <= Settings.neutralHouseholds; i++)
             {
                 var householdAgent = new HouseholdAgent(HousePosition.Neutral);
-                env.Add(householdAgent, $"household{i:D2}");
+                env.Add(householdAgent, $"household{counter:D2}");
+                counter++;
+            }
+
+            for (int i = 1; i <= Settings.negativeHouseholds; i++)
+            {
+                var householdAgent = new HouseholdAgent(HousePosition.Negative);
+                env.Add(householdAgent, $"household{counter:D2}");
+                counter++;
             }
 
             var enviromentAgent = new EnvironmentAgent();
@@ -27,6 +43,7 @@ namespace Coursework
 
             env.Start();
 
+            Console.WriteLine("One Day Finished");
             Console.ReadLine();
         }
     }

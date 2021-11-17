@@ -10,6 +10,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using ActressMas;
+using Coursework;
+
 class EnvironmentAgent : Agent
 {
     private Random rand = new Random();
@@ -22,11 +24,16 @@ class EnvironmentAgent : Agent
     private const int MaxPriceToBuyFromUtility = 22; //max possible price to buy 1kWh from the utility company (in pence)
     private const int MinPriceToSellToUtility = 2; //min possible price to sell 1kWh to the utility company (in pence)
     private const int MaxPriceToSellToUtility = 5; //max possible price to sell 1kWh to the utility company (in pence)
-    
-    public override void Act(Message message)
 
+    private int activeHouseholds = Settings.totalHouseholds;
+    private int totalProfit = 0;
+
+    public override void Act(Message message)
     {
-        switch (message.Content)
+
+        message.Parse(out string action, out string parameters);
+
+        switch (action)
         {
             case "start": //this agent only responds to "start" messages
                 string senderID = message.Sender; //get the sender's name so we can reply to them
@@ -41,10 +48,25 @@ class EnvironmentAgent : Agent
                 break;
 
             case "finish":
-                
+                HandleFinish(parameters);
+                break;
 
             default:
                 break;
+        }
+    }
+
+    private void HandleFinish(string info)
+    {
+        activeHouseholds--;
+
+        totalProfit = totalProfit + Convert.ToInt32(info);
+
+        if(activeHouseholds == 0)
+        {
+            Console.WriteLine("========================================");
+            Console.WriteLine($"Total Profit = {totalProfit}");
+            Stop();
         }
     }
 }

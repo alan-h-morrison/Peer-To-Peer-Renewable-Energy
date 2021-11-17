@@ -83,7 +83,7 @@ namespace Coursework
         {
            if(energyDiff == 0 && start == true)
            {
-                Send("communtiy", $"end {profit}");
+                Send("enviroment", $"finish {profit}");
                 Console.WriteLine($"[{Name}] ({type}) profit = {profit}");
                 Stop();
            }
@@ -100,11 +100,32 @@ namespace Coursework
             utilitySell = Int32.Parse(values[3]);
             energyDiff = generation - demand;
 
-            // Price to buy renewable is lower than the price to buy utility
-            renewableBuy = rand.Next((utilityBuy - 3), utilityBuy);
+            if(position == HousePosition.Positive)
+            {
+                // Price to buy renewable is lower than the price to buy utility
+                renewableBuy = rand.Next((utilityBuy - 3), utilityBuy);
 
-            // Price to sell renewable is higher than the price to sell to utility
-            renewableSell = rand.Next(utilitySell, (utilitySell + 10));
+                // Price to sell renewable is higher than the price to sell to utility
+                renewableSell = rand.Next(utilitySell, (utilitySell + 10));
+            }
+
+            if (position == HousePosition.Neutral)
+            {
+                // Price to buy renewable is lower than the price to buy utility
+                renewableBuy = rand.Next((utilityBuy - 3), utilityBuy);
+
+                // Price to sell renewable is higher than the price to sell to utility
+                renewableSell = rand.Next(utilitySell, (utilitySell + 10));
+            }
+
+            if (position == HousePosition.Negative)
+            {
+                // Price to buy renewable is lower than the price to buy utility
+                renewableBuy = rand.Next((utilityBuy - 3), utilityBuy);
+
+                // Price to sell renewable is higher than the price to sell to utility
+                renewableSell = rand.Next(utilitySell, (utilitySell + 10));
+            }
 
             // Decides whether a household is a buyer, seller or does not need extra energy
             if (energyDiff > 0)
@@ -127,6 +148,7 @@ namespace Coursework
             else
             {
                 Console.WriteLine($"{Name} : Met Energy Demand");
+                Send("enviroment", $"finish {profit}");
                 Stop();
             }
             //Console.WriteLine($"{Name}: \n\tdemand = {demand}\n\tgeneration = {generation}\n\tBuy Utility = {utilityBuy}\n\tBuy Renewable = {renewableBuy}\n\tSell Utility = {utilitySell}\n\tSell Renewable = {renewableSell}");
@@ -152,6 +174,7 @@ namespace Coursework
                 profit = profit + utilitySell;
             }
             Console.WriteLine($"{Name} ({type}): profit = {profit}");
+            Send("enviroment", $"finish {profit}");
             Stop();
         }
 
@@ -164,6 +187,7 @@ namespace Coursework
                 profit = profit -  utilityBuy;
             }
             Console.WriteLine($"{Name} ({type}): profit = {profit}");
+            Send("enviroment", $"finish {profit}");
             Stop();
         }
     }

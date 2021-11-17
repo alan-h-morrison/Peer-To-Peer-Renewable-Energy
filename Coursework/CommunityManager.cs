@@ -99,6 +99,7 @@ namespace Coursework
 
                 // sort buyer bidding list by asceding value and the reversing the list to sort by descending value
                 buyerBids.Sort((s1, s2) => s1.BidValue.CompareTo(s2.BidValue));
+                //buyerBids.Reverse();
 
                 if ((buyerBids.Count > 0 && sellerBids.Count > 0))
                 {
@@ -125,8 +126,12 @@ namespace Coursework
                                 buyerBids[i].DecreaseEnergy();
                                 sellerBids[j].DecreaseEnergy();
 
-                                Send(buyerBids[i].Bidder, $"bought {buyerBids[i].BidValue}");
-                                Send(sellerBids[j].Bidder, $"sold {buyerBids[i].BidValue}");
+                                int equilibriumPrice = (buyerBids[i].BidValue + sellerBids[j].BidValue) / 2;
+                                Send(buyerBids[i].Bidder, $"bought {equilibriumPrice}");
+                                Send(sellerBids[j].Bidder, $"sold {equilibriumPrice}");
+
+                                //Send(buyerBids[i].Bidder, $"bought {buyerBids[i].BidValue}");
+                                //Send(sellerBids[j].Bidder, $"sold {buyerBids[i].BidValue}");
 
                                 transaction = true;
                             }
@@ -178,36 +183,3 @@ namespace Coursework
         }
     }
 }
-
-/*
- * 
-
-    for(int i = buyerBids.Count - 1; i >= 0; i --)
-                {
-                    for(int j = sellerBids.Count - 1; j>=0; j--)
-                    {
-                        if (buyerBids[buyerCounter].EnergyDifference == 0)
-                        {
-                            buyerBids.RemoveAt(buyerCounter);
-                            break;
-                        }
-
-                        if (sellerBids[sellerCounter].EnergyDifference == 0)
-                        {
-                            sellerBids.RemoveAt(sellerCounter);
-                            break;
-                        }
-
-                        if (buyerItem.BidValue > sellerItem.BidValue)
-                        {
-                            buyerBids[buyerCounter].DecreaseEnergy();
-                            sellerBids[sellerCounter].DecreaseEnergy();
-
-                            Send(buyerItem.Bidder, $"bought {sellerItem.BidValue}");
-                            Send(sellerItem.Bidder, $"sold {sellerItem.BidValue}");
-
-                            noTransaction = true;
-                        }
-                    }
-                }
-                    */

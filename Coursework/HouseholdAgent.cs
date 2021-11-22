@@ -19,17 +19,22 @@ namespace Coursework
         private int renewableBuy;
         private int renewableSell;
         private int energyDiff;
-        private int profit;
 
         private bool start;
 
         private HousePosition position;
         private string type;
 
+        private int profit;
+        private int utilityCounter;
+        private int renewableCounter;
+
         public HouseholdAgent(HousePosition housePosition)
         {
             position = housePosition;
             profit = 0;
+            utilityCounter = 0;
+            renewableCounter = 0;
         }
 
         public override void Setup()
@@ -83,8 +88,12 @@ namespace Coursework
         {
            if(energyDiff == 0 && start == true)
            {
-                Send("enviroment", $"finish {profit}");
-                Console.WriteLine($"[{Name}] ({type}) profit = {profit}");
+                // reset energy difference to send to enviroment for final statistical analysis
+                energyDiff = demand - generation;
+
+                energyDiff = Math.Abs(energyDiff);
+
+                Send("enviroment", $"finish {Name} {type} {profit} {energyDiff} {utilityCounter} {renewableCounter} {utilityBuy} {utilitySell}");
                 Stop();
            }
         }
@@ -138,7 +147,7 @@ namespace Coursework
             else if (energyDiff < 0)
             {
                 // Make negative number positive
-                energyDiff = energyDiff * -1;
+                energyDiff = Math.Abs(energyDiff);
 
                 //  Console.WriteLine($"{Name}: Buy {energyDiff}");
                 type = "buyer";
@@ -147,8 +156,9 @@ namespace Coursework
             }
             else
             {
+                type = "n/a";
                 Console.WriteLine($"{Name} : Met Energy Demand");
-                Send("enviroment", $"finish {profit}");
+                Send("enviroment", $"finish {Name} {type} {profit} {energyDiff} {utilityCounter} {renewableCounter} {utilityBuy} {utilitySell}");
                 Stop();
             }
             //Console.WriteLine($"{Name}: \n\tdemand = {demand}\n\tgeneration = {generation}\n\tBuy Utility = {utilityBuy}\n\tBuy Renewable = {renewableBuy}\n\tSell Utility = {utilitySell}\n\tSell Renewable = {renewableSell}");
@@ -156,12 +166,14 @@ namespace Coursework
         private void HandleSold(string amount)
         {
             energyDiff = energyDiff - 1;
+            renewableCounter++;
             profit = profit + Convert.ToInt32(amount);
         }
 
         private void HandleBought(string amount)
         {
             energyDiff = energyDiff - 1;
+            renewableCounter++;
             profit = profit - Convert.ToInt32(amount);
         }
 
@@ -169,12 +181,18 @@ namespace Coursework
         {
             Console.WriteLine($"{Name}: Sell {energyDiff}");
 
-            for (int i = energyDiff; i >= 0; i--)
+            for (int i = energyDiff; i > 0; i--)
             {
                 profit = profit + utilitySell;
+                utilityCounter++;
             }
-            Console.WriteLine($"{Name} ({type}): profit = {profit}");
-            Send("enviroment", $"finish {profit}");
+            //Console.WriteLine($"{Name} ({type}): profit = {profit}");
+
+            energyDiff = demand - generation;
+
+            energyDiff = Math.Abs(energyDiff);
+
+            Send("enviroment", $"finish {Name} {type} {profit} {energyDiff} {utilityCounter} {renewableCounter} {utilityBuy} {utilitySell}");
             Stop();
         }
 
@@ -182,12 +200,17 @@ namespace Coursework
         {
             Console.WriteLine($"{Name}: Buy {energyDiff}");
 
-            for (int i = energyDiff; i >= 0; i--)
+            for (int i = energyDiff; i > 0; i--)
             {
                 profit = profit -  utilityBuy;
+                utilityCounter++;
             }
-            Console.WriteLine($"{Name} ({type}): profit = {profit}");
-            Send("enviroment", $"finish {profit}");
+
+            energyDiff = demand - generation;
+
+            energyDiff = Math.Abs(energyDiff);
+            //Console.WriteLine($"{Name} ({type}): profit = {profit}");
+            Send("enviroment", $"finish {Name} {type} {profit} {energyDiff} {utilityCounter} {renewableCounter} {utilityBuy} {utilitySell}");
             Stop();
         }
     }

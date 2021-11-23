@@ -95,6 +95,8 @@ class EnvironmentAgent : Agent
                 int priceToSellToUtility = rand.Next(MinPriceToSellToUtility, MaxPriceToSellToUtility);    //what the household's utility company
                                                                                                            //offers to buy 1kWh of renewable energy for
                 string content = $"inform {demand} {generation} {priceToBuyFromUtility} {priceToSellToUtility}";
+
+                Settings.Increment();
                 Send(senderID, content); //send the message with this information back to the household agent that requested it
                 break;
 
@@ -129,6 +131,7 @@ class EnvironmentAgent : Agent
         {
             households.Sort((s1, s2) => s1.HouseName.CompareTo(s2.HouseName));
             Thread.Sleep(100);
+            Console.WriteLine("\n******* Day Finished *******");
 
             foreach (var houseItem in households)
             {
@@ -148,9 +151,9 @@ class EnvironmentAgent : Agent
                     totalRenewableSold = totalRenewableSold + houseItem.RenwableCounter;
                     totalUtilitySold = totalUtilitySold + houseItem.UtilityCounter;
                     // print out stats for every individual household who participated in the system
-                    Console.WriteLine("----------------------------------------------------------------------------------");
-                    Console.WriteLine($"[{houseItem.HouseName}] ({houseItem.HouseType}): total profit = {houseItem.HouseProfit}, energy diff = {houseItem.EnergyDifference},  renewable energy = {houseItem.RenwableCounter}, utility energy = {houseItem.UtilityCounter}");
-                    Console.WriteLine($"\nutility gain = {utilityGain}, profit gain = {profitGain}");
+
+                    Console.WriteLine("----------------------------------------------------------------------------------------------------------------------------------------");
+                    Console.WriteLine($"[{houseItem.HouseName}] ({houseItem.HouseType}): total profit = {houseItem.HouseProfit}, potential utility profit = {utilityLoss}, energy diff = {houseItem.EnergyDifference},  renewable energy = {houseItem.RenwableCounter}, utility energy = {houseItem.UtilityCounter}");
                 }
 
                 if (houseItem.HouseType.Contains("buyer"))
@@ -166,20 +169,22 @@ class EnvironmentAgent : Agent
                     totalUtilityBought = totalUtilityBought + houseItem.UtilityCounter;
 
                     // print out stats for every individual household who participated in the system
-                    Console.WriteLine("----------------------------------------------------------------------------------");
-                    Console.WriteLine($"[{houseItem.HouseName}] ({houseItem.HouseType}): total profit = {houseItem.HouseProfit}, energy diff = {houseItem.EnergyDifference},  renewable energy = {houseItem.RenwableCounter}, utility energy = {houseItem.UtilityCounter}");
-                    Console.WriteLine($"\nutility loss = {utilityLoss}, profit loss = {profitLoss}");
+                    Console.WriteLine("----------------------------------------------------------------------------------------------------------------------------------------");
+                    Console.WriteLine($"[{houseItem.HouseName}] ({houseItem.HouseType}): total profit = {houseItem.HouseProfit}, potential utility profit = {utilityLoss}, energy diff = {houseItem.EnergyDifference},  renewable energy = {houseItem.RenwableCounter}, utility energy = {houseItem.UtilityCounter}");
                 }
                 totalUtilityProfit = totalUtilityGain + totalUtilityLoss;
             }
 
-            Console.WriteLine("\n============================= SYSTEM RESULTS =============================");
-            Console.WriteLine($"total profit = {totalProfit}");
-            Console.WriteLine($"profit gain = {profitGain}");
-            Console.WriteLine($"profit loss = {profitLoss}");
-            Console.WriteLine($"total utilty profit = {totalUtilityProfit}");
-            Console.WriteLine($"total utilty gain = {totalUtilityGain}");
-            Console.WriteLine($"total utility loss = {totalUtilityLoss}");
+            Console.WriteLine("\n============================================================");
+            Console.WriteLine("OVERALL MARKET RESULTS");
+            Console.WriteLine("============================================================");
+
+            Console.WriteLine($"\ntotal profit = {totalProfit}");
+            Console.WriteLine($"potential utilty profit = {totalUtilityProfit}");
+            Console.WriteLine($"\nprofit gain = {profitGain}");  
+            Console.WriteLine($"potential utilty gain = {totalUtilityGain}");
+            Console.WriteLine($"\nprofit loss = {profitLoss}");
+            Console.WriteLine($"potential utility loss = {totalUtilityLoss}");
 
             Stop();
         }

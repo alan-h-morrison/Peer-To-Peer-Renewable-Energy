@@ -95,11 +95,11 @@ namespace Coursework
             try
             {
                 sellerBids.Sort((s1, s2) => s1.BidValue.CompareTo(s2.BidValue));
-                sellerBids.Reverse();
+                //sellerBids.Reverse();
 
                 // sort buyer bidding list by asceding value and the reversing the list to sort by descending value
                 buyerBids.Sort((s1, s2) => s1.BidValue.CompareTo(s2.BidValue));
-                //buyerBids.Reverse();
+                buyerBids.Reverse();
 
                 if ((buyerBids.Count > 0 && sellerBids.Count > 0))
                 {
@@ -127,11 +127,11 @@ namespace Coursework
                                 sellerBids[j].DecreaseEnergy();
 
                                 int equilibriumPrice = (buyerBids[i].BidValue + sellerBids[j].BidValue) / 2;
+                                Settings.Increment();
                                 Send(buyerBids[i].Bidder, $"bought {equilibriumPrice}");
-                                Send(sellerBids[j].Bidder, $"sold {equilibriumPrice}");
 
-                                //Send(buyerBids[i].Bidder, $"bought {buyerBids[i].BidValue}");
-                                //Send(sellerBids[j].Bidder, $"sold {buyerBids[i].BidValue}");
+                                Settings.Increment();
+                                Send(sellerBids[j].Bidder, $"sold {equilibriumPrice}");
 
                                 transaction = true;
                             }
@@ -144,11 +144,13 @@ namespace Coursework
 
                         foreach (var buyerItem in buyerBids)
                         {
+                            Settings.Increment();
                             Send(buyerItem.Bidder, "no-sellers");
                         }
 
                         foreach (var sellerItem in sellerBids)
                         {
+                            Settings.Increment();
                             Send(sellerItem.Bidder, "no-buyers");
                         }
 
@@ -159,6 +161,7 @@ namespace Coursework
                 {
                     foreach (var sellerItem in sellerBids)
                     {
+                        Settings.Increment();
                         Send(sellerItem.Bidder, "no-buyers");
                     }
                     sellerBids.Clear();
@@ -168,6 +171,7 @@ namespace Coursework
                 {
                     foreach (var buyerItem in buyerBids)
                     {
+                        Settings.Increment();
                         Send(buyerItem.Bidder, "no-sellers");
                     }
                     buyerBids.Clear();
@@ -178,8 +182,6 @@ namespace Coursework
             {
                 Console.WriteLine(ex);
             }
-            
-
         }
     }
 }

@@ -43,7 +43,11 @@ namespace Coursework
 
             env.Start();
 
-            Console.WriteLine("One Day Finished");
+            Console.WriteLine("\n============================================================");
+            Console.WriteLine("SYSTEM RESULTS");
+            Console.WriteLine("============================================================");
+            Console.WriteLine($"\nTotal Messages = {Settings.Counter}");
+
             Console.ReadLine();
         }
     }

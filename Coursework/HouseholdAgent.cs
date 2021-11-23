@@ -41,6 +41,7 @@ namespace Coursework
         {
             Console.WriteLine($"Starting [{Name}]");
 
+            Settings.Increment();
             Send("enviroment", "start");
         }
 
@@ -93,6 +94,7 @@ namespace Coursework
 
                 energyDiff = Math.Abs(energyDiff);
 
+                Settings.Increment();
                 Send("enviroment", $"finish {Name} {type} {profit} {energyDiff} {utilityCounter} {renewableCounter} {utilityBuy} {utilitySell}");
                 Stop();
            }
@@ -141,6 +143,8 @@ namespace Coursework
             {
                 // Console.WriteLine($"{Name}: Sell {energyDiff}");
                 type = "seller";
+
+                Settings.Increment();
                 Send("community", $"register sell {renewableSell} {energyDiff}");
                 start = true;
             }
@@ -151,6 +155,8 @@ namespace Coursework
 
                 //  Console.WriteLine($"{Name}: Buy {energyDiff}");
                 type = "buyer";
+
+                Settings.Increment();
                 Send("community", $"register buy {renewableBuy} {energyDiff}");
                 start = true;
             }
@@ -158,6 +164,8 @@ namespace Coursework
             {
                 type = "n/a";
                 Console.WriteLine($"{Name} : Met Energy Demand");
+
+                Settings.Increment();
                 Send("enviroment", $"finish {Name} {type} {profit} {energyDiff} {utilityCounter} {renewableCounter} {utilityBuy} {utilitySell}");
                 Stop();
             }
@@ -192,6 +200,7 @@ namespace Coursework
 
             energyDiff = Math.Abs(energyDiff);
 
+            Settings.Increment();
             Send("enviroment", $"finish {Name} {type} {profit} {energyDiff} {utilityCounter} {renewableCounter} {utilityBuy} {utilitySell}");
             Stop();
         }
@@ -210,6 +219,8 @@ namespace Coursework
 
             energyDiff = Math.Abs(energyDiff);
             //Console.WriteLine($"{Name} ({type}): profit = {profit}");
+
+            Settings.Increment();      
             Send("enviroment", $"finish {Name} {type} {profit} {energyDiff} {utilityCounter} {renewableCounter} {utilityBuy} {utilitySell}");
             Stop();
         }

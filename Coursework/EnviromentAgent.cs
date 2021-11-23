@@ -47,6 +47,7 @@ class EnvironmentAgent : Agent
 
     private int numSeller = 0;
     private int numBuyer = 0;
+    private int numNeither = 0;
 
     private class Household
     {
@@ -178,8 +179,27 @@ class EnvironmentAgent : Agent
                     Console.WriteLine("----------------------------------------------------------------------------------------------------------------------------------------");
                     Console.WriteLine($"[{houseItem.HouseName}] ({houseItem.HouseType}): total profit = {houseItem.HouseProfit}, potential utility profit = {utilityLoss}, energy diff = {houseItem.EnergyDifference},  renewable energy = {houseItem.RenwableCounter}, utility energy = {houseItem.UtilityCounter}");
                 }
+
+                if(houseItem.HouseType.Contains("n/a"))
+                {
+                    numNeither++;
+                }
                 totalUtilityProfit = totalUtilityGain + totalUtilityLoss;
             }
+
+            Console.WriteLine("\n============================================================");
+            Console.WriteLine("HOUSEHOLDS BREAKDOWN");
+            Console.WriteLine("============================================================");
+
+            Console.WriteLine($"total households = {households.Count}");
+
+            Console.WriteLine($"\nnumber of buyer household(s) = {numBuyer}");
+            Console.WriteLine($"number of seller household(s) = {numSeller}");
+            Console.WriteLine($"number of absent households(s) = {numNeither}");
+
+            Console.WriteLine($"\nnumber of positive household(s) = {Settings.positiveHouseholds}");
+            Console.WriteLine($"number of neutral household(s) = {Settings.neutralHouseholds}");
+            Console.WriteLine($"number of negative households(s) = {Settings.negativeHouseholds}");
 
             Console.WriteLine("\n============================================================");
             Console.WriteLine("MARKET RESULTS");
@@ -202,7 +222,7 @@ class EnvironmentAgent : Agent
             Console.WriteLine($"absent market loss on average = {totalUtilityLoss / numBuyer}");
 
             Console.WriteLine("\n============================================================");
-            Console.WriteLine("OVERALL ENERGY ALLOCATION RESULTS");
+            Console.WriteLine("ENERGY ALLOCATION RESULTS");
             Console.WriteLine("============================================================");
 
             Console.WriteLine($"energy demand = {totalDemmand}");

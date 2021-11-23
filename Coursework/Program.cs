@@ -46,7 +46,7 @@ namespace Coursework
             Console.WriteLine("\n============================================================");
             Console.WriteLine("SYSTEM RESULTS");
             Console.WriteLine("============================================================");
-            Console.WriteLine($"\nTotal Messages = {Settings.Counter}");
+            Console.WriteLine($"Total Messages = {Settings.Counter}");
 
             Console.ReadLine();
         }

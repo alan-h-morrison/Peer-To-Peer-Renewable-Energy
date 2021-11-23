@@ -45,6 +45,8 @@ class EnvironmentAgent : Agent
     private int totalUtilityBought = 0;
     private int totalUtilitySold = 0;
 
+    private int numSeller = 0;
+    private int numBuyer = 0;
 
     private class Household
     {
@@ -142,6 +144,8 @@ class EnvironmentAgent : Agent
                 // calculation to find out statistics for the whole system
                 if(houseItem.HouseType.Contains("seller"))
                 {
+                    numSeller++;
+
                     utilityGain = houseItem.EnergyDifference * houseItem.utilitySell;
                     totalUtilityGain = totalUtilityGain + utilityGain;
 
@@ -158,6 +162,8 @@ class EnvironmentAgent : Agent
 
                 if (houseItem.HouseType.Contains("buyer"))
                 {
+                    numBuyer++;
+
                     utilityLoss = houseItem.EnergyDifference * houseItem.utilityBuy;
                     utilityLoss = utilityLoss * -1;
                     totalUtilityLoss = totalUtilityLoss + utilityLoss;
@@ -176,15 +182,36 @@ class EnvironmentAgent : Agent
             }
 
             Console.WriteLine("\n============================================================");
-            Console.WriteLine("OVERALL MARKET RESULTS");
+            Console.WriteLine("MARKET RESULTS");
             Console.WriteLine("============================================================");
 
-            Console.WriteLine($"\ntotal profit = {totalProfit}");
-            Console.WriteLine($"potential utilty profit = {totalUtilityProfit}");
-            Console.WriteLine($"\nprofit gain = {profitGain}");  
-            Console.WriteLine($"potential utilty gain = {totalUtilityGain}");
-            Console.WriteLine($"\nprofit loss = {profitLoss}");
-            Console.WriteLine($"potential utility loss = {totalUtilityLoss}");
+            Console.WriteLine($"total profit = {totalProfit}");
+            Console.WriteLine($"profit gain = {profitGain}");
+            Console.WriteLine($"profit loss = {profitLoss}");
+            Console.WriteLine($"profit gain on average = {profitGain / numSeller}");
+            Console.WriteLine($"profit loss on average = {profitLoss / numBuyer}");
+
+            Console.WriteLine("\n============================================================");
+            Console.WriteLine("ABSENT MARKET RESULTS");
+            Console.WriteLine("============================================================");
+
+            Console.WriteLine($"absent market profit = {totalUtilityProfit}");
+            Console.WriteLine($"absent market gain = {totalUtilityGain}");
+            Console.WriteLine($"absent market loss = {totalUtilityLoss}");
+            Console.WriteLine($"absent market gain on average = {totalUtilityGain / numSeller}");
+            Console.WriteLine($"absent market loss on average = {totalUtilityLoss / numBuyer}");
+
+            Console.WriteLine("\n============================================================");
+            Console.WriteLine("OVERALL ENERGY ALLOCATION RESULTS");
+            Console.WriteLine("============================================================");
+
+            Console.WriteLine($"energy demand = {totalDemmand}");
+            Console.WriteLine($"energy excess = {totalExcess}");
+            Console.WriteLine($"\nrenewable energy bought = {totalRenewableBought}");
+            Console.WriteLine($"utility energy bought = {totalUtilityBought}");
+            Console.WriteLine($"\nrenewable energy sold = {totalRenewableSold}");
+            Console.WriteLine($"utility energy sold = {totalUtilitySold}");
+
 
             Stop();
         }

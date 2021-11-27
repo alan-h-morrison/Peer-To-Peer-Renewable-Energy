@@ -202,24 +202,24 @@ class EnvironmentAgent : Agent
             Console.WriteLine($"number of negative households(s) = {Settings.negativeHouseholds}");
 
             Console.WriteLine("\n============================================================");
-            Console.WriteLine("MARKET RESULTS");
+            Console.WriteLine("STANDARD RESULTS");
+            Console.WriteLine("============================================================");
+
+            Console.WriteLine($"total profit = {totalUtilityProfit}");
+            Console.WriteLine($"\nprofit gain = {totalUtilityGain}");
+            Console.WriteLine($"profit loss = {totalUtilityLoss}");
+            Console.WriteLine($"\nprofit gain on average = {totalUtilityGain / numSeller}");
+            Console.WriteLine($"profit loss on average = {totalUtilityLoss / numBuyer}");
+
+            Console.WriteLine("\n============================================================");
+            Console.WriteLine("PEER-TO-PEER MARKET RESULTS");
             Console.WriteLine("============================================================");
 
             Console.WriteLine($"total profit = {totalProfit}");
-            Console.WriteLine($"profit gain = {profitGain}");
+            Console.WriteLine($"\nprofit gain = {profitGain}");
             Console.WriteLine($"profit loss = {profitLoss}");
-            Console.WriteLine($"profit gain on average = {profitGain / numSeller}");
+            Console.WriteLine($"\nprofit gain on average = {profitGain / numSeller}");
             Console.WriteLine($"profit loss on average = {profitLoss / numBuyer}");
-
-            Console.WriteLine("\n============================================================");
-            Console.WriteLine("ABSENT MARKET RESULTS");
-            Console.WriteLine("============================================================");
-
-            Console.WriteLine($"absent market profit = {totalUtilityProfit}");
-            Console.WriteLine($"absent market gain = {totalUtilityGain}");
-            Console.WriteLine($"absent market loss = {totalUtilityLoss}");
-            Console.WriteLine($"absent market gain on average = {totalUtilityGain / numSeller}");
-            Console.WriteLine($"absent market loss on average = {totalUtilityLoss / numBuyer}");
 
             Console.WriteLine("\n============================================================");
             Console.WriteLine("ENERGY ALLOCATION RESULTS");

@@ -158,7 +158,7 @@ class EnvironmentAgent : Agent
                     // print out stats for every individual household who participated in the system
 
                     Console.WriteLine("----------------------------------------------------------------------------------------------------------------------------------------");
-                    Console.WriteLine($"[{houseItem.HouseName}] ({houseItem.HouseType}): total profit = {houseItem.HouseProfit}, potential utility profit = {utilityLoss}, energy diff = {houseItem.EnergyDifference},  renewable energy = {houseItem.RenwableCounter}, utility energy = {houseItem.UtilityCounter}");
+                    Console.WriteLine($"[{houseItem.HouseName}] ({houseItem.HouseType}): total profit = {houseItem.HouseProfit}, potential utility profit = {utilityGain}, energy diff = {houseItem.EnergyDifference},  renewable energy = {houseItem.RenwableCounter}, utility energy = {houseItem.UtilityCounter}");
                 }
 
                 if (houseItem.HouseType.Contains("buyer"))

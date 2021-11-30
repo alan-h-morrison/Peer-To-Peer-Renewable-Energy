@@ -111,32 +111,21 @@ namespace Coursework
             utilitySell = Int32.Parse(values[3]);
             energyDiff = generation - demand;
 
-            if(position == HousePosition.Positive)
+            if (position == HousePosition.Positive)
             {
-                // Price to buy renewable is lower than the price to buy utility
-                renewableBuy = utilityBuy + 15;
-
-                // Price to sell renewable is higher than the price to sell to utility
-                renewableSell = utilitySell;
-
+                renewableBuy = utilityBuy - 2;
+                renewableSell = utilitySell + 2;
             }
 
             if (position == HousePosition.Neutral)
             {
-                // Price to buy renewable is lower than the price to buy utility
-                renewableBuy = utilityBuy - 5;
-
-                // Price to sell renewable is higher than the price to sell to utility
-                renewableSell = utilitySell + 10;
-
+                renewableBuy = utilityBuy - 6;
+                renewableSell = utilitySell + 8;
             }
 
             if (position == HousePosition.Negative)
             {
-                // Price to buy renewable is lower than the price to buy utility
                 renewableBuy = utilityBuy - 10;
-
-                // Price to sell renewable is higher than the price to sell to utility
                 renewableSell = utilitySell + 15;
 
             }

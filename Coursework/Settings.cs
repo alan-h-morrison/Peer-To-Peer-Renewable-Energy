@@ -14,7 +14,6 @@ namespace Coursework
         public static int negativeHouseholds = 30;
 
         public static int totalHouseholds = positiveHouseholds + neutralHouseholds + negativeHouseholds;
-        public int totalProfit = 0;
 
         private static int counter = 0;
         private static readonly object lockObject = new object();

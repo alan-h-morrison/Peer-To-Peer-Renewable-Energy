@@ -12,8 +12,11 @@ namespace Coursework
         static void Main(string[] args)
         {
             var env = new EnvironmentMas();
+
+            // used to add appropriate household number
             int counter = 1;
 
+            // creates and adds all the total positive households to the enviroment
             for (int i = 1; i <= Settings.positiveHouseholds; i++)
             {
                 var householdAgent = new HouseholdAgent(HousePosition.Positive);
@@ -21,6 +24,7 @@ namespace Coursework
                 counter++;
             }
 
+            // creates and adds all the total neutral households to the enviroment
             for (int i = 1; i <= Settings.neutralHouseholds; i++)
             {
                 var householdAgent = new HouseholdAgent(HousePosition.Neutral);
@@ -28,6 +32,7 @@ namespace Coursework
                 counter++;
             }
 
+            // creates and adds all the total negative households to the enviroment
             for (int i = 1; i <= Settings.negativeHouseholds; i++)
             {
                 var householdAgent = new HouseholdAgent(HousePosition.Negative);
@@ -35,19 +40,23 @@ namespace Coursework
                 counter++;
             }
 
+            // adds enviroment agent to the enviroment
             var enviromentAgent = new EnvironmentAgent();
             env.Add(enviromentAgent, "enviroment");
 
+            // adds community manager agent to the enviroment
             var communityAgent = new CommunityManager();
             env.Add(communityAgent, "community");
 
             env.Start();
 
+            // Prints the total amount of messages passed running the system to screen
             Console.WriteLine("\n============================================================");
             Console.WriteLine("SYSTEM RESULTS");
             Console.WriteLine("============================================================");
             Console.WriteLine($"total messages = {Settings.Counter}");
 
+            Console.WriteLine("\nPress Enter To Exit...");
             Console.ReadLine();
         }
     }

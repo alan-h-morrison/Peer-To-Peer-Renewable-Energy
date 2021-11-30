@@ -46,8 +46,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bid.cs" />
     <Compile Include="CommunityManager.cs" />
     <Compile Include="EnviromentAgent.cs" />
+    <Compile Include="Household.cs" />
     <Compile Include="HouseholdAgent.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -114,28 +114,31 @@ namespace Coursework
             if(position == HousePosition.Positive)
             {
                 // Price to buy renewable is lower than the price to buy utility
-                renewableBuy = rand.Next((utilityBuy - 3), utilityBuy);
+                renewableBuy = utilityBuy + 15;
 
                 // Price to sell renewable is higher than the price to sell to utility
-                renewableSell = rand.Next(utilitySell, (utilitySell + 10));
+                renewableSell = utilitySell;
+
             }
 
             if (position == HousePosition.Neutral)
             {
                 // Price to buy renewable is lower than the price to buy utility
-                renewableBuy = rand.Next((utilityBuy - 3), utilityBuy);
+                renewableBuy = utilityBuy - 5;
 
                 // Price to sell renewable is higher than the price to sell to utility
-                renewableSell = rand.Next(utilitySell, (utilitySell + 10));
+                renewableSell = utilitySell + 10;
+
             }
 
             if (position == HousePosition.Negative)
             {
                 // Price to buy renewable is lower than the price to buy utility
-                renewableBuy = rand.Next((utilityBuy - 3), utilityBuy);
+                renewableBuy = utilityBuy - 10;
 
                 // Price to sell renewable is higher than the price to sell to utility
-                renewableSell = rand.Next(utilitySell, (utilitySell + 10));
+                renewableSell = utilitySell + 15;
+
             }
 
             // Decides whether a household is a buyer, seller or does not need extra energy

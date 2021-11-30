@@ -130,9 +130,11 @@ class EnvironmentAgent : Agent
 
         households.Add(bid);
 
+
+
         if (activeHouseholds == 0)
         {
-            households.Sort((s1, s2) => s1.HouseName.CompareTo(s2.HouseName));
+
             Thread.Sleep(100);
             Console.WriteLine("\n******* Day Finished *******");
 

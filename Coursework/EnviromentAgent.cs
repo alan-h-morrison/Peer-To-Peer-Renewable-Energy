@@ -227,11 +227,12 @@ class EnvironmentAgent : Agent
             Console.WriteLine("ENERGY ALLOCATION RESULTS");
             Console.WriteLine("============================================================");
 
-            Console.WriteLine($"energy demand = {totalDemmand}");
-            Console.WriteLine($"energy excess = {totalExcess}");
-            Console.WriteLine($"\nrenewable energy bought = {totalRenewableBought}");
+            Console.WriteLine($"\nenergy demand = {totalDemmand}");
+            Console.WriteLine($"renewable energy bought = {totalRenewableBought}");
             Console.WriteLine($"utility energy bought = {totalUtilityBought}");
-            Console.WriteLine($"\nrenewable energy sold = {totalRenewableSold}");
+
+            Console.WriteLine($"\nenergy excess = {totalExcess}");
+            Console.WriteLine($"renewable energy sold = {totalRenewableSold}");
             Console.WriteLine($"utility energy sold = {totalUtilitySold}");
 
 

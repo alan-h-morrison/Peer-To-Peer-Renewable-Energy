@@ -17,10 +17,10 @@ class EnvironmentAgent : Agent
 {
     private Random rand = new Random();
 
-    private const int MinGeneration = 5; //min possible generation from renewable energy on a day for a household (in kWh)
-    private const int MaxGeneration = 15; //max possible generation from renewable energy on a day for a household (in kWh)
-    private const int MinDemand = 5; //min possible demand on a day for a household (in kWh)
-    private const int MaxDemand = 15; //max possible demand on a day for a household (in kWh)
+    private const int MinGeneration = 1; //min possible generation from renewable energy on a day for a household (in kWh)
+    private const int MaxGeneration = 5; //max possible generation from renewable energy on a day for a household (in kWh)
+    private const int MinDemand = 1; //min possible demand on a day for a household (in kWh)
+    private const int MaxDemand = 25; //max possible demand on a day for a household (in kWh)
     private const int MinPriceToBuyFromUtility = 12; //min possible price to buy 1kWh from the utility company (in pence)
     private const int MaxPriceToBuyFromUtility = 22; //max possible price to buy 1kWh from the utility company (in pence)
     private const int MinPriceToSellToUtility = 2; //min possible price to sell 1kWh to the utility company (in pence)
@@ -34,6 +34,8 @@ class EnvironmentAgent : Agent
 
     private int utilityGain = 0; // individual profit gained by selling all energy to utility companies
     private int utilityLoss = 0;  // individual profit gained by buying all energy to utility companies
+    private int averageUtilityGain = 0; // average profit gained by selling energy to utility companies
+    private int averageUtilityLoss = 0; // average profit gained by buying energy to utility companies
 
     private int totalUtilityProfit = 0; // total profit by buying/selling energy to utility companies
     private int totalUtilityGain = 0; // total profit gained by buying all energy to utility companies
@@ -45,6 +47,9 @@ class EnvironmentAgent : Agent
     private int totalRenewableSold = 0; // total renewable energy sold
     private int totalUtilityBought = 0; // total utility energy bought
     private int totalUtilitySold = 0; // total utility energy sold
+
+    private double renewableDemandPercent = 0;
+    private double renewableExcessPercent = 0;
 
     private int activeHouseholds = Settings.totalHouseholds; // total number of households
     private int numSeller = 0; // number of seller households
@@ -139,7 +144,8 @@ class EnvironmentAgent : Agent
 
                     // prints out statistics for each individual household who participated in the system
                     Console.WriteLine("----------------------------------------------------------------------------------------------------------------------------------------");
-                    Console.WriteLine($"[{houseItem.HouseName}] ({houseItem.HouseType}): total profit = {houseItem.HouseProfit}, potential utility profit = {utilityGain}, energy diff = {houseItem.EnergyDifference},  renewable energy = {houseItem.RenwableCounter}, utility energy = {houseItem.UtilityCounter}");
+                    Console.WriteLine($"[{houseItem.HouseName}] ({houseItem.HouseType}): total profit = {houseItem.HouseProfit}, potential utility profit = {utilityGain}, " +
+                                           $"energy diff = {houseItem.EnergyDifference},  renewable energy = {houseItem.RenwableCounter}, utility energy = {houseItem.UtilityCounter}");
                 }
 
                 // process buyer households' statistics
@@ -159,7 +165,8 @@ class EnvironmentAgent : Agent
 
                     // prints out statistics for each individual household who participated in the system
                     Console.WriteLine("----------------------------------------------------------------------------------------------------------------------------------------");
-                    Console.WriteLine($"[{houseItem.HouseName}] ({houseItem.HouseType}): total profit = {houseItem.HouseProfit}, potential utility profit = {utilityLoss}, energy diff = {houseItem.EnergyDifference},  renewable energy = {houseItem.RenwableCounter}, utility energy = {houseItem.UtilityCounter}");
+                    Console.WriteLine($"[{houseItem.HouseName}] ({houseItem.HouseType}): total profit = {houseItem.HouseProfit}, potential utility profit = {utilityLoss}, " +
+                                           $"energy diff = {houseItem.EnergyDifference}, + renewable energy = {houseItem.RenwableCounter}, utility energy = {houseItem.UtilityCounter}");
                 }
 
                 // process absent households' statistics
@@ -170,8 +177,27 @@ class EnvironmentAgent : Agent
                 totalUtilityProfit = totalUtilityGain + totalUtilityLoss;
             }
 
-            averageGain = profitGain / numSeller;
-            averageLoss = profitLoss / numBuyer;
+
+            // calculate the average profit gained by a seller household
+            averageGain = (int)Math.Round((double)(profitGain / numSeller));
+
+            // calculate the average profit lossed by a buyer household
+            averageLoss = (int)Math.Round((double)(profitLoss / numBuyer));
+
+            // calculate the average profit gained if energy is sold to utility company
+            averageUtilityGain = (int)Math.Round((double)(totalUtilityGain / numSeller));
+
+            // calculate the average profit gained if energy is bought to utility company
+            averageUtilityLoss = (int)Math.Round((double)(totalUtilityLoss / numBuyer));
+
+            // calculate the percentage of energy demand met through renewable energy
+            renewableDemandPercent = (double)Math.Round((double)(100 * totalRenewableBought) / totalDemmand, 1);
+
+            // calculate the percentage of energy excess sold is renewable energy
+            renewableExcessPercent = (double)Math.Round((double)(100 * totalRenewableSold) / totalExcess, 1);
+
+            //Math.Round(renewableDemandPercent, 2);
+            //Math.Round(renewableExcessPercent, 2);
 
 
             // prints out statistics for the system as a whole
@@ -193,48 +219,65 @@ class EnvironmentAgent : Agent
             Console.WriteLine("STANDARD RESULTS");
             Console.WriteLine("============================================================");
 
-            Console.WriteLine($"total profit = {totalUtilityProfit}");
-            Console.WriteLine($"\nprofit gain = {totalUtilityGain}");
-            Console.WriteLine($"profit loss = {totalUtilityLoss}");
-            Console.WriteLine($"\nprofit gain on average = {totalUtilityGain / numSeller}");
-            Console.WriteLine($"profit loss on average = {totalUtilityLoss / numBuyer}");
+            Console.WriteLine($"total profit = {totalUtilityProfit}p");
+            Console.WriteLine($"\nprofit gain = {totalUtilityGain}p");
+            Console.WriteLine($"profit loss = {totalUtilityLoss}p");
+            Console.WriteLine($"\nprofit gain on average = {averageUtilityGain}p");
+            Console.WriteLine($"profit loss on average = {averageUtilityLoss}p");
 
             Console.WriteLine("\n============================================================");
             Console.WriteLine("PEER-TO-PEER MARKET RESULTS");
             Console.WriteLine("============================================================");
 
-            Console.WriteLine($"total profit = {totalProfit}");
-            Console.WriteLine($"\nprofit gain = {profitGain}");
-            Console.WriteLine($"profit loss = {profitLoss}");
-            Console.WriteLine($"\nprofit gain on average = {averageGain}");
-            Console.WriteLine($"profit loss on average = {averageLoss}");
+            Console.WriteLine($"total profit = {totalProfit}p");
+            Console.WriteLine($"\nprofit gain = {profitGain}p");
+            Console.WriteLine($"profit loss = {profitLoss}p");
+            Console.WriteLine($"\nprofit gain on average = {averageGain}p");
+            Console.WriteLine($"profit loss on average = {averageLoss}p");
 
             Console.WriteLine("\n============================================================");
             Console.WriteLine("ENERGY ALLOCATION RESULTS");
             Console.WriteLine("============================================================");
 
-            Console.WriteLine($"\nenergy demand = {totalDemmand}");
-            Console.WriteLine($"renewable energy bought = {totalRenewableBought}");
-            Console.WriteLine($"utility energy bought = {totalUtilityBought}");
+            Console.WriteLine($"\nenergy demand = {totalDemmand} kWh");
+            Console.WriteLine($"renewable energy bought = {totalRenewableBought} kWh");
+            Console.WriteLine($"utility energy bought = {totalUtilityBought} kWh");
 
-            Console.WriteLine($"\nenergy excess = {totalExcess}");
-            Console.WriteLine($"renewable energy sold = {totalRenewableSold}");
-            Console.WriteLine($"utility energy sold = {totalUtilitySold}");
+            Console.WriteLine($"\nenergy excess = {totalExcess} kWh");
+            Console.WriteLine($"renewable energy sold = {totalRenewableSold} kWh");
+            Console.WriteLine($"utility energy sold = {totalUtilitySold} kWh");
 
-            //addRecord("D:\\University\\disposition.csv", totalProfit, profitGain, profitLoss, averageGain, averageLoss, totalDemmand, totalRenewableBought, totalUtilityBought, totalExcess, totalRenewableSold, totalUtilitySold);
+            Console.WriteLine($"\npercentage of renewable energy bought by households: {renewableDemandPercent}%");
+            Console.WriteLine($"percentage of renewable energy sold by households: {renewableExcessPercent}%");
+
+            // adds statisitics to .csv file for analysis
+            addRecord("D:\\University\\stats.csv", averageGain, averageLoss, renewableDemandPercent, renewableExcessPercent, numBuyer, numSeller, numAbsent);
 
             Stop();
         }
     }
 
     // add system statistics to csv file for experiment analysis
-    public static void addRecord(string filepath, int recordProfit, int recordProfitGain, int recordProfitLoss, int recordAverageGain, int recordAverageLoss, int recordDemmand, int recordRenewBought, int recordUtilBought, int recordTotalExcess, int recordRenewSold, int recordUtilSold)
+    public static void addRecord(string filepath, 
+                                     int recordAverageGain,
+                                     int recordAverageLoss, 
+                                     double recordRenewDemandPercent, 
+                                     double recordRenewExcessPercent, 
+                                     int recordBuyers,
+                                     int recordSellers,
+                                     int recordAbsent)
     {
         try
         {
             using (System.IO.StreamWriter file = new System.IO.StreamWriter(@filepath, true))
             {
-                file.WriteLine(recordProfit.ToString() + "," + recordProfitGain.ToString() + "," + recordProfitLoss.ToString() + "," + recordAverageGain.ToString() + "," + recordAverageLoss.ToString() + "," + recordDemmand.ToString() + "," + recordRenewBought.ToString() + "," + recordUtilBought.ToString() + "," + recordTotalExcess.ToString() + "," + recordRenewSold.ToString() + "," + recordUtilSold.ToString());
+                file.WriteLine(recordAverageGain.ToString() + ","
+                                   + recordAverageLoss.ToString() + ","
+                                   + recordRenewDemandPercent.ToString() + ","
+                                   + recordRenewExcessPercent.ToString() + ","
+                                   + recordBuyers.ToString() + ","
+                                   + recordSellers.ToString() + ","
+                                   + recordAbsent.ToString());
             }
         }
         catch (Exception ex)

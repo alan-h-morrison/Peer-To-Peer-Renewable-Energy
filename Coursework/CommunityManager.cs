@@ -139,7 +139,7 @@ namespace Coursework
                     // both buyers and sellers are sent a message informing them to buy/sell the rest of their energy from utility companies
                     if (!transaction)
                     {
-                        Console.WriteLine("No more transactions can take place");
+                        Console.WriteLine($"[{Name}]: No more transactions can take place");
 
                         foreach (var buyerItem in buyerBids)
                         {

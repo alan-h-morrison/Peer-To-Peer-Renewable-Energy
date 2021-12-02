@@ -93,6 +93,8 @@ namespace Coursework
            // if a household has participated in the market and has no energy left to buy/sell
            if(energyDiff == 0 && start == true)
            {
+                Console.WriteLine($"[{Name}]: Met Energy Demand");
+
                 // reset energy difference to send to enviroment for final statistical analysis
                 energyDiff = demand - generation;
 
@@ -176,7 +178,7 @@ namespace Coursework
             {
                 // household does not have excess or deficit in energy, they've met their energy demand and will not participat in the market
                 type = "n/a";
-                Console.WriteLine($"{Name} : Met Energy Demand");
+                Console.WriteLine($"[{Name}] : Met Energy Demand");
 
                 // global message counter incremented
                 Settings.Increment();
@@ -206,7 +208,7 @@ namespace Coursework
         // no more buyers present, all remaining energy for a household has is sold to their utility company
         private void HandleNoBuyers()
         {
-            Console.WriteLine($"{Name}: Sell Remaining {energyDiff} kWh");
+            Console.WriteLine($"[{Name}]: Sell remaining {energyDiff} kWh to utility company");
 
             for (int i = energyDiff; i > 0; i--)
             {
@@ -231,7 +233,7 @@ namespace Coursework
         // no more sellers present, all remaining energy for a household has is bought from their utility company
         private void HandleNoSellers()
         {
-            Console.WriteLine($"{Name}: Buy {energyDiff}");
+            Console.WriteLine($"[{Name}]: Buy remaining {energyDiff} kWh from utility company");
 
             for (int i = energyDiff; i > 0; i--)
             {

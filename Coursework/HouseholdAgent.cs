@@ -38,14 +38,14 @@ namespace Coursework
             renewableCounter = 0;
         }
 
-        // Every household agent sends the message "start" to the enviroment agent
+        // Every household agent sends the message "start" to the environment agent
         public override void Setup()
         {
             Console.WriteLine($"Starting [{Name}]");
 
             // global message counter incremented
             Settings.Increment();
-            Send("enviroment", "start");
+            Send("environment", "start");
         }
 
         public override void Act(Message message)
@@ -95,7 +95,7 @@ namespace Coursework
            {
                 Console.WriteLine($"[{Name}]: Met Energy Demand");
 
-                // reset energy difference to send to enviroment for final statistical analysis
+                // reset energy difference to send to environment for final statistical analysis
                 energyDiff = demand - generation;
 
                 // make energy difference positive if negative
@@ -104,13 +104,13 @@ namespace Coursework
                 // global message counter incremented
                 Settings.Increment();
 
-                // send enviroment agent variables for final statistical analysis of the system
-                Send("enviroment", $"finish {Name} {type} {profit} {energyDiff} {utilityCounter} {renewableCounter} {utilityBuy} {utilitySell}");
+                // send environment agent variables for final statistical analysis of the system
+                Send("environment", $"finish {Name} {type} {profit} {energyDiff} {utilityCounter} {renewableCounter} {utilityBuy} {utilitySell}");
                 Stop();
            }
         }
 
-        // Method called to process infromation send by the enviroment agent
+        // Method called to process infromation send by the environment agent
         // register as either buyer/seller/absent household
         private void HandleStart(string details)
         {
@@ -125,8 +125,8 @@ namespace Coursework
             // household's position on renewable energy is used to determine their action-selection function when bidding buying or selling renewable energy
             if (position == HousePosition.Positive)
             {
-                renewableBuy = utilityBuy - 2;
-                renewableSell = utilitySell + 2;
+                renewableBuy = rand.Next(utilityBuy - 6, utilityBuy - 2);
+                renewableSell = rand.Next(utilitySell + 2, utilitySell + 8);
             }
 
             if (position == HousePosition.Neutral)
@@ -152,7 +152,7 @@ namespace Coursework
                 Settings.Increment();
 
                 // messages community manager to register their bid as a seller, their price to sell renewable energy and their energy difference
-                Send("community", $"register sell {renewableSell} {energyDiff}");
+                Send("community", $"bid sell {renewableSell} {energyDiff}");
 
                 // household has begun participating in the market
                 start = true;
@@ -169,7 +169,7 @@ namespace Coursework
                 Settings.Increment();
 
                 // messages community manager to register their bid as a buyer, their price to buy renewable energy and their energy difference
-                Send("community", $"register buy {renewableBuy} {energyDiff}");
+                Send("community", $"bid buy {renewableBuy} {energyDiff}");
 
                 // household has begun participating in the market
                 start = true;
@@ -178,13 +178,13 @@ namespace Coursework
             {
                 // household does not have excess or deficit in energy, they've met their energy demand and will not participat in the market
                 type = "n/a";
-                Console.WriteLine($"[{Name}] : Met Energy Demand");
+                Console.WriteLine($"[{Name}]: Met Energy Demand");
 
                 // global message counter incremented
                 Settings.Increment();
 
-                // send enviroment agent variables for final statistical analysis of the system
-                Send("enviroment", $"finish {Name} {type} {profit} {energyDiff} {utilityCounter} {renewableCounter} {utilityBuy} {utilitySell}");
+                // send environment agent variables for final statistical analysis of the system
+                Send("environment", $"finish {Name} {type} {profit} {energyDiff} {utilityCounter} {renewableCounter} {utilityBuy} {utilitySell}");
                 Stop();
             }
         }
@@ -216,7 +216,7 @@ namespace Coursework
                 utilityCounter++;
             }
 
-            // reset energy difference to send to enviroment for final statistical analysis
+            // reset energy difference to send to environment for final statistical analysis
             energyDiff = demand - generation;
 
             // make energy difference positive if negative
@@ -225,8 +225,8 @@ namespace Coursework
             // global message counter incremented
             Settings.Increment();
 
-            // send enviroment agent variables for final statistical analysis of the system
-            Send("enviroment", $"finish {Name} {type} {profit} {energyDiff} {utilityCounter} {renewableCounter} {utilityBuy} {utilitySell}");
+            // send environment agent variables for final statistical analysis of the system
+            Send("environment", $"finish {Name} {type} {profit} {energyDiff} {utilityCounter} {renewableCounter} {utilityBuy} {utilitySell}");
             Stop();
         }
 
@@ -241,7 +241,7 @@ namespace Coursework
                 utilityCounter++;
             }
 
-            // reset energy difference to send to enviroment for final statistical analysis
+            // reset energy difference to send to environment for final statistical analysis
             energyDiff = demand - generation;
 
             // make energy difference positive if negative
@@ -250,8 +250,8 @@ namespace Coursework
             // global message counter incremented
             Settings.Increment();
 
-            // send enviroment agent variables for final statistical analysis of the system
-            Send("enviroment", $"finish {Name} {type} {profit} {energyDiff} {utilityCounter} {renewableCounter} {utilityBuy} {utilitySell}");
+            // send environment agent variables for final statistical analysis of the system
+            Send("environment", $"finish {Name} {type} {profit} {energyDiff} {utilityCounter} {renewableCounter} {utilityBuy} {utilitySell}");
             Stop();
         }
     }

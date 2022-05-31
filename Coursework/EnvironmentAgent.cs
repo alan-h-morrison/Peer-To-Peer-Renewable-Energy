@@ -17,10 +17,10 @@ class EnvironmentAgent : Agent
 {
     private Random rand = new Random();
 
-    private const int MinGeneration = 1; //min possible generation from renewable energy on a day for a household (in kWh)
-    private const int MaxGeneration = 5; //max possible generation from renewable energy on a day for a household (in kWh)
-    private const int MinDemand = 1; //min possible demand on a day for a household (in kWh)
-    private const int MaxDemand = 25; //max possible demand on a day for a household (in kWh)
+    private const int MinGeneration = 5; //min possible generation from renewable energy on a day for a household (in kWh)
+    private const int MaxGeneration = 15; //max possible generation from renewable energy on a day for a household (in kWh)
+    private const int MinDemand = 5; //min possible demand on a day for a household (in kWh)
+    private const int MaxDemand = 15; //max possible demand on a day for a household (in kWh)
     private const int MinPriceToBuyFromUtility = 12; //min possible price to buy 1kWh from the utility company (in pence)
     private const int MaxPriceToBuyFromUtility = 22; //max possible price to buy 1kWh from the utility company (in pence)
     private const int MinPriceToSellToUtility = 2; //min possible price to sell 1kWh to the utility company (in pence)
@@ -71,6 +71,8 @@ class EnvironmentAgent : Agent
 
         switch (action)
         {
+
+
 
             case "start": //this agent only responds to "start" messages
                 string senderID = message.Sender; //get the sender's name so we can reply to them
@@ -251,13 +253,14 @@ class EnvironmentAgent : Agent
             Console.WriteLine($"percentage of renewable energy sold by households: {renewableExcessPercent}%");
 
             // adds statisitics to .csv file for analysis
-            addRecord("D:\\University\\stats.csv", averageGain, averageLoss, renewableDemandPercent, renewableExcessPercent, numBuyer, numSeller, numAbsent);
+            // addRecord("D:\\University\\stats.csv", averageGain, averageLoss, renewableDemandPercent, renewableExcessPercent, numBuyer, numSeller, numAbsent);
 
             Stop();
         }
     }
 
     // add system statistics to csv file for experiment analysis
+    /*
     public static void addRecord(string filepath, 
                                      int recordAverageGain,
                                      int recordAverageLoss, 
@@ -285,4 +288,5 @@ class EnvironmentAgent : Agent
             Console.WriteLine(ex);
         }
     }
+    */
 }

@@ -11,12 +11,12 @@ namespace Coursework
     {
         static void Main(string[] args)
         {
-            var env = new EnvironmentMas();
+            var env = new EnvironmentMas(noTurns:100);
 
             // used to add appropriate household number
             int counter = 1;
 
-            // creates and adds all the total positive households to the enviroment
+            // creates and adds all the total positive households to the environment
             for (int i = 1; i <= Settings.positiveHouseholds; i++)
             {
                 var householdAgent = new HouseholdAgent(HousePosition.Positive);
@@ -24,7 +24,7 @@ namespace Coursework
                 counter++;
             }
 
-            // creates and adds all the total neutral households to the enviroment
+            // creates and adds all the total neutral households to the environment
             for (int i = 1; i <= Settings.neutralHouseholds; i++)
             {
                 var householdAgent = new HouseholdAgent(HousePosition.Neutral);
@@ -32,7 +32,7 @@ namespace Coursework
                 counter++;
             }
 
-            // creates and adds all the total negative households to the enviroment
+            // creates and adds all the total negative households to the environment
             for (int i = 1; i <= Settings.negativeHouseholds; i++)
             {
                 var householdAgent = new HouseholdAgent(HousePosition.Negative);
@@ -40,11 +40,11 @@ namespace Coursework
                 counter++;
             }
 
-            // adds enviroment agent to the enviroment
-            var enviromentAgent = new EnvironmentAgent();
-            env.Add(enviromentAgent, "enviroment");
+            // adds environment agent to the environment
+            var environmentAgent = new EnvironmentAgent();
+            env.Add(environmentAgent, "environment");
 
-            // adds community manager agent to the enviroment
+            // adds community manager agent to the environment
             var communityAgent = new CommunityManager();
             env.Add(communityAgent, "community");
 

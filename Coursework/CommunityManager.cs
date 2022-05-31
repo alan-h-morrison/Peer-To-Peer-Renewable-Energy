@@ -35,7 +35,7 @@ namespace Coursework
 
                 switch (action)
                 {
-                    case "register":
+                    case "bid":
                         HandleRegister(message.Sender, parameters);
                         break;
 
@@ -88,7 +88,7 @@ namespace Coursework
                 // there must both buyer bid and seller bid in each bidding list to allow the community manager to pair bids
                 if ((buyerBids.Count > 0 && sellerBids.Count > 0))
                 {
-                    // bool variable used to track if a takes place
+                    // bool variable used to track if a trade takes place
                     var transaction = false;
 
                     // a nested for loop used to compare all buyer bids against all seller bids

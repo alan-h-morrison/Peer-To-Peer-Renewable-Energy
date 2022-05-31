@@ -33,8 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ActressMas">
-      <HintPath>..\..\..\..\source\repos\ActressMas-master\ActressMAS v3.0\ActressMas Dll\ActressMas.dll</HintPath>
+    <Reference Include="ActressMas, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>dlls\ActressMas.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -48,7 +49,7 @@
   <ItemGroup>
     <Compile Include="Bid.cs" />
     <Compile Include="CommunityManager.cs" />
-    <Compile Include="EnviromentAgent.cs" />
+    <Compile Include="EnvironmentAgent.cs" />
     <Compile Include="Household.cs" />
     <Compile Include="HouseholdAgent.cs" />
     <Compile Include="Program.cs" />
@@ -57,6 +58,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="dlls\ActressMas.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
